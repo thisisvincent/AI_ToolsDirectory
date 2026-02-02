@@ -2,8 +2,8 @@
   "/next_api/users/route": "app/next_api/users/route.js",
   "/directory/page": "app/directory/page.js",
   "/tools-by-use-case/page": "app/tools-by-use-case/page.js",
-  "/search/page": "app/search/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/blog/page": "app/blog/page.js",
-  "/admin/page": "app/admin/page.js"
+  "/admin/page": "app/admin/page.js",
+  "/page": "app/page.js"
 }
