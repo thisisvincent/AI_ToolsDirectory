@@ -3,7 +3,7 @@ import CrudOperations from '@/lib/crud-operations';
 import { createSuccessResponse, createErrorResponse } from '@/lib/create-response';
 import { requestMiddleware, parseQueryParams, validateRequestBody } from "@/lib/api-utils";
 import { NextRequest } from 'next/server';
-import { generateAdminToken } from '@/lib/auth';
+import { generateUserToken } from '@/lib/auth';
 
 // Helper to get user ID from request headers
 function getUserIdFromRequest(request: NextRequest): string | null {
@@ -21,9 +21,9 @@ export const GET = requestMiddleware(async (request) => {
     });
   }
 
-  // Use admin token to bypass RLS for reading user's own data
-  const adminToken = await generateAdminToken();
-  const favouritesCrud = new CrudOperations("user_favourites", adminToken);
+  // Use user token for RLS
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("user_favourites", userToken);
   
   const data = await favouritesCrud.findMany(
     { user_id: parseInt(userId) },
@@ -55,10 +55,10 @@ export const POST = requestMiddleware(async (request) => {
     });
   }
 
-  // Use admin token to bypass RLS for database operations
-  const adminToken = await generateAdminToken();
-  const favouritesCrud = new CrudOperations("user_favourites", adminToken);
-  
+  // Use user token for RLS
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("user_favourites", userToken);
+
   // Check if already favourited
   const existing = await favouritesCrud.findMany({
     user_id: parseInt(userId),
@@ -105,10 +105,10 @@ export const DELETE = requestMiddleware(async (request) => {
     });
   }
 
-  // Use admin token to bypass RLS for database operations
-  const adminToken = await generateAdminToken();
-  const favouritesCrud = new CrudOperations("user_favourites", adminToken);
-  
+  // Use user token for RLS
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("user_favourites", userToken);
+
   // Find the favourite record
   const existing = await favouritesCrud.findMany({
     user_id: parseInt(userId),
