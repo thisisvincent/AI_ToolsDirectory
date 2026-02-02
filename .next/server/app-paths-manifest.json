@@ -4,5 +4,7 @@
   "/page": "app/page.js",
   "/directory/page": "app/directory/page.js",
   "/tools-by-use-case/page": "app/tools-by-use-case/page.js",
-  "/new-releases/page": "app/new-releases/page.js"
+  "/new-releases/page": "app/new-releases/page.js",
+  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
+  "/ai-news-sources/page": "app/ai-news-sources/page.js"
 }
