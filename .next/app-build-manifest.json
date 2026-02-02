@@ -50,6 +50,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/ai-guides-use-case/ai-guides/page.js"
+    ],
+    "/ai-guides-use-case/[subcategoryId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/ai-guides-use-case/[subcategoryId]/page.js"
     ]
   }
 }
