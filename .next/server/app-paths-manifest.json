@@ -2,10 +2,10 @@
   "/next_api/ai-news-sources/route": "app/next_api/ai-news-sources/route.js",
   "/next_api/users/route": "app/next_api/users/route.js",
   "/next_api/blog/route": "app/next_api/blog/route.js",
-  "/directory/page": "app/directory/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/search/page": "app/search/page.js",
   "/ai-news-sources/page": "app/ai-news-sources/page.js",
   "/page": "app/page.js",
-  "/admin/page": "app/admin/page.js"
+  "/admin/page": "app/admin/page.js",
+  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js"
 }
