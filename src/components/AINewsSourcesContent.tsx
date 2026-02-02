@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, ExternalLink, ChevronLeft, ChevronRight, Loader2, Globe } from 'lucide-react';
 import { api, ApiError } from '@/lib/api-client';
 import { toast } from 'sonner';
+import { FavoriteButton } from '@/components/FavoriteButton';
 
 interface AINewsSource {
   id: number;
@@ -284,9 +285,23 @@ export function AINewsSourcesContent() {
                       transition={{ duration: 0.3, delay: index * 0.05 }}
                       layout
                     >
-                      <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group border-2 hover:border-primary/50">
+                      <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group border-2 hover:border-primary/50 relative">
+                        {/* Favourite Button */}
+                        <div className="absolute top-4 right-4 z-10">
+                          <FavoriteButton
+                            itemType="news"
+                            itemId={source.id}
+                            itemName={source.name}
+                            itemUrl={source.url}
+                            itemDescription={source.description}
+                            itemImageUrl={source.thumbnail_url}
+                            metadata={{ category: source.category, badges: source.badges }}
+                            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm"
+                          />
+                        </div>
+
                         {/* Thumbnail */}
-                        <div 
+                        <div
                           className="relative w-full aspect-[16/10] overflow-hidden bg-muted cursor-pointer"
                           onClick={() => window.open(source.url, '_blank')}
                         >
