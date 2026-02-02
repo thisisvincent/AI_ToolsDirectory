@@ -2,6 +2,7 @@ import CrudOperations from '@/lib/crud-operations';
 import { createSuccessResponse, createErrorResponse } from '@/lib/create-response';
 import { requestMiddleware, validateRequestBody, parseQueryParams } from "@/lib/api-utils";
 import { NextRequest } from 'next/server';
+import { generateUserToken } from '@/lib/auth';
 
 function getUserIdFromRequest(request: NextRequest): string | null {
   return request.headers.get('X-User-Id');
@@ -19,7 +20,8 @@ export const GET = requestMiddleware(async (request) => {
 
   const item_type = request.nextUrl.searchParams.get('item_type');
 
-  const favouritesCrud = new CrudOperations("favourites");
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("favourites", userToken);
 
   const filters: any = { user_id: parseInt(userId) };
   if (item_type) {
@@ -49,7 +51,8 @@ export const POST = requestMiddleware(async (request) => {
     });
   }
 
-  const favouritesCrud = new CrudOperations("favourites");
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("favourites", userToken);
 
   const existing = await favouritesCrud.findMany({
     user_id: parseInt(userId),
@@ -98,7 +101,8 @@ export const DELETE = requestMiddleware(async (request) => {
     });
   }
 
-  const favouritesCrud = new CrudOperations("favourites");
+  const userToken = await generateUserToken(userId, '');
+  const favouritesCrud = new CrudOperations("favourites", userToken);
 
   const existing = await favouritesCrud.findMany({
     user_id: parseInt(userId),
