@@ -1,0 +1,4 @@
+{
+  "/next_api/auth/login/route": "app/next_api/auth/login/route.js",
+  "/page": "app/page.js"
+}
