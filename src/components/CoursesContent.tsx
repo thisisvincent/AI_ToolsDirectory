@@ -8,7 +8,6 @@ import { ArrowLeft, ExternalLink, Clock, Award, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { FavoriteButton } from '@/components/FavoriteButton';
 
 interface Course {
   id: number;
@@ -188,28 +187,14 @@ export function CoursesContent() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.4, delay: courseIndex * 0.05 }}
-                        className="bg-card rounded-xl border-2 border-border hover:border-primary/50 transition-all duration-300 overflow-hidden relative"
+                        className="bg-card rounded-xl border-2 border-border hover:border-primary/50 transition-all duration-300 overflow-hidden"
                       >
                         <div className="p-6">
                           <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="flex-1">
-                              <div className="flex items-start gap-2 mb-2">
-                                <h3 className="text-xl font-bold flex-1 text-card-foreground">
-                                  {course.title}
-                                </h3>
-                                <FavoriteButton
-                                  itemType="course"
-                                  itemId={course.id}
-                                  itemName={course.title}
-                                  itemUrl={course.url}
-                                  itemDescription={course.description}
-                                  metadata={{
-                                    provider: course.provider,
-                                    duration: course.duration,
-                                    certificate: course.certificate_available,
-                                  }}
-                                />
-                              </div>
+                              <h3 className="text-xl font-bold mb-2 text-card-foreground">
+                                {course.title}
+                              </h3>
                               {course.description && (
                                 <p className="text-muted-foreground mb-3 leading-relaxed whitespace-pre-line">
                                   {course.description}

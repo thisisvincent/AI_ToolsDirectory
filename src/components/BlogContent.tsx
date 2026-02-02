@@ -10,7 +10,6 @@ import { Search, Calendar, User, ArrowRight, Loader2, BookOpen } from 'lucide-re
 import { api, ApiError } from '@/lib/api-client';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { FavoriteButton } from '@/components/FavoriteButton';
 
 interface BlogPost {
   id: number;
@@ -180,21 +179,7 @@ export function BlogContent() {
                     layout
                   >
                     <Link href={`/blog/${post.slug}`}>
-                      <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group border-2 hover:border-primary/50 cursor-pointer relative">
-                        {/* Favourite Button */}
-                        <div className="absolute top-4 right-4 z-10">
-                          <FavoriteButton
-                            itemType="blog"
-                            itemId={post.id}
-                            itemName={post.title}
-                            itemUrl={`/blog/${post.slug}`}
-                            itemDescription={post.description}
-                            itemImageUrl={getImageUrl(post, index)}
-                            metadata={{ author: post.author_name }}
-                            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm"
-                          />
-                        </div>
-
+                      <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group border-2 hover:border-primary/50 cursor-pointer">
                         {/* Image */}
                         <div className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                           <img
