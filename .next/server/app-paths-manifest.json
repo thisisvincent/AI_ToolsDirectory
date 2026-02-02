@@ -1,4 +1,5 @@
 {
+  "/next_api/ai-news-sources/route": "app/next_api/ai-news-sources/route.js",
   "/blog/page": "app/blog/page.js",
   "/directory/page": "app/directory/page.js",
   "/favourites/page": "app/favourites/page.js",
