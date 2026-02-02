@@ -3,7 +3,6 @@ import CrudOperations from '@/lib/crud-operations';
 import { createSuccessResponse, createErrorResponse } from '@/lib/create-response';
 import { requestMiddleware, parseQueryParams, validateRequestBody } from "@/lib/api-utils";
 import { NextRequest } from 'next/server';
-import { generateUserToken } from '@/lib/auth';
 
 // Helper to get user ID from request headers
 function getUserIdFromRequest(request: NextRequest): string | null {
@@ -13,7 +12,7 @@ function getUserIdFromRequest(request: NextRequest): string | null {
 // GET request - fetch user's favourites
 export const GET = requestMiddleware(async (request) => {
   const userId = getUserIdFromRequest(request);
-  
+
   if (!userId) {
     return createErrorResponse({
       errorMessage: "User not authenticated",
@@ -21,9 +20,9 @@ export const GET = requestMiddleware(async (request) => {
     });
   }
 
-  // Use user token for RLS
-  const userToken = await generateUserToken(userId, '');
-  const favouritesCrud = new CrudOperations("user_favourites", userToken);
+  // Use anon key - RLS policies will handle authorization
+  const anonKey = process.env.POSTGREST_API_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  const favouritesCrud = new CrudOperations("user_favourites", anonKey);
   
   const data = await favouritesCrud.findMany(
     { user_id: parseInt(userId) },
@@ -55,9 +54,9 @@ export const POST = requestMiddleware(async (request) => {
     });
   }
 
-  // Use user token for RLS
-  const userToken = await generateUserToken(userId, '');
-  const favouritesCrud = new CrudOperations("user_favourites", userToken);
+  // Use anon key - RLS policies will handle authorization
+  const anonKey = process.env.POSTGREST_API_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  const favouritesCrud = new CrudOperations("user_favourites", anonKey);
 
   // Check if already favourited
   const existing = await favouritesCrud.findMany({
@@ -105,9 +104,9 @@ export const DELETE = requestMiddleware(async (request) => {
     });
   }
 
-  // Use user token for RLS
-  const userToken = await generateUserToken(userId, '');
-  const favouritesCrud = new CrudOperations("user_favourites", userToken);
+  // Use anon key - RLS policies will handle authorization
+  const anonKey = process.env.POSTGREST_API_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  const favouritesCrud = new CrudOperations("user_favourites", anonKey);
 
   // Find the favourite record
   const existing = await favouritesCrud.findMany({
