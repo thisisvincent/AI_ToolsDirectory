@@ -115,6 +115,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/next_api/courses/route.js"
+    ],
+    "/research-writing/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/research-writing/page.js"
     ]
   }
 }
