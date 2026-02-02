@@ -1,12 +1,11 @@
 {
-  "/next_api/auth/login/route": "app/next_api/auth/login/route.js",
   "/next_api/favourites/route": "app/next_api/favourites/route.js",
   "/next_api/ai-news-sources/route": "app/next_api/ai-news-sources/route.js",
-  "/page": "app/page.js",
   "/directory/page": "app/directory/page.js",
   "/tools-by-use-case/page": "app/tools-by-use-case/page.js",
   "/new-releases/page": "app/new-releases/page.js",
   "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
   "/ai-news-sources/page": "app/ai-news-sources/page.js",
-  "/search/page": "app/search/page.js"
+  "/search/page": "app/search/page.js",
+  "/favourites/page": "app/favourites/page.js"
 }
