@@ -15,7 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { api, ApiError } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { UserPlus, Trash2, Mail, Lock, CheckCircle, XCircle, Clock, Key, Home, Edit, BookOpen, Plus } from 'lucide-react';
+import { UserPlus, Trash2, Mail, Lock, CheckCircle, XCircle, Clock, Key, Home, Edit, BookOpen, Plus, Newspaper } from 'lucide-react';
 import { isAdmin } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -44,6 +44,20 @@ interface BlogPost {
   published: boolean;
   featured: boolean;
   published_at?: string;
+  created_at?: string;
+}
+
+interface AINewsSource {
+  id: number;
+  name: string;
+  url: string;
+  description: string;
+  thumbnail_url?: string;
+  category?: string;
+  badges?: string[];
+  featured?: boolean;
+  sort_order?: number;
+  last_updated?: string;
   created_at?: string;
 }
 
@@ -77,6 +91,21 @@ export function AdminPanel() {
     featured: false,
   });
 
+  const [newsSources, setNewsSources] = useState<AINewsSource[]>([]);
+  const [isCreateNewsDialogOpen, setIsCreateNewsDialogOpen] = useState(false);
+  const [isEditNewsDialogOpen, setIsEditNewsDialogOpen] = useState(false);
+  const [selectedNewsSource, setSelectedNewsSource] = useState<AINewsSource | null>(null);
+  const [newsFormData, setNewsFormData] = useState({
+    name: '',
+    url: '',
+    description: '',
+    thumbnail_url: '',
+    category: '',
+    badges: '',
+    featured: false,
+    sort_order: 0,
+  });
+
   useEffect(() => {
     if (!isAdmin()) {
       toast.error('Access denied. Only administrators can access this page.');
@@ -85,6 +114,7 @@ export function AdminPanel() {
     }
     loadUsers();
     loadBlogPosts();
+    loadNewsSources();
   }, [router]);
 
   const loadUsers = async () => {
@@ -404,6 +434,143 @@ export function AdminPanel() {
     }
   };
 
+  const loadNewsSources = async () => {
+    try {
+      const data = await api.get<AINewsSource[]>('/ai-news-sources');
+      setNewsSources(data);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to load news sources: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleCreateNewsSource = async () => {
+    if (!newsFormData.name || !newsFormData.url || !newsFormData.description) {
+      toast.error('Name, URL, and description are required');
+      return;
+    }
+
+    try {
+      const badges = newsFormData.badges
+        ? newsFormData.badges.split(',').map(b => b.trim()).filter(Boolean)
+        : [];
+
+      await api.post('/ai-news-sources', {
+        name: newsFormData.name,
+        url: newsFormData.url,
+        description: newsFormData.description,
+        thumbnail_url: newsFormData.thumbnail_url || null,
+        category: newsFormData.category || null,
+        badges,
+        featured: newsFormData.featured,
+        sort_order: newsFormData.sort_order,
+      });
+
+      toast.success('News source created successfully');
+      setIsCreateNewsDialogOpen(false);
+      setNewsFormData({
+        name: '',
+        url: '',
+        description: '',
+        thumbnail_url: '',
+        category: '',
+        badges: '',
+        featured: false,
+        sort_order: 0,
+      });
+      loadNewsSources();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to create news source: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const openEditNewsDialog = (source: AINewsSource) => {
+    setSelectedNewsSource(source);
+    setNewsFormData({
+      name: source.name,
+      url: source.url,
+      description: source.description,
+      thumbnail_url: source.thumbnail_url || '',
+      category: source.category || '',
+      badges: source.badges?.join(', ') || '',
+      featured: source.featured || false,
+      sort_order: source.sort_order || 0,
+    });
+    setIsEditNewsDialogOpen(true);
+  };
+
+  const handleEditNewsSource = async () => {
+    if (!selectedNewsSource) return;
+
+    if (!newsFormData.name || !newsFormData.url || !newsFormData.description) {
+      toast.error('Name, URL, and description are required');
+      return;
+    }
+
+    try {
+      const badges = newsFormData.badges
+        ? newsFormData.badges.split(',').map(b => b.trim()).filter(Boolean)
+        : [];
+
+      await api.put(`/ai-news-sources?id=${selectedNewsSource.id}`, {
+        name: newsFormData.name,
+        url: newsFormData.url,
+        description: newsFormData.description,
+        thumbnail_url: newsFormData.thumbnail_url || null,
+        category: newsFormData.category || null,
+        badges,
+        featured: newsFormData.featured,
+        sort_order: newsFormData.sort_order,
+      });
+
+      toast.success('News source updated successfully');
+      setIsEditNewsDialogOpen(false);
+      setSelectedNewsSource(null);
+      setNewsFormData({
+        name: '',
+        url: '',
+        description: '',
+        thumbnail_url: '',
+        category: '',
+        badges: '',
+        featured: false,
+        sort_order: 0,
+      });
+      loadNewsSources();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to update news source: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleDeleteNewsSource = async (sourceId: number) => {
+    if (!confirm('Are you sure you want to delete this news source? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/ai-news-sources?id=${sourceId}`);
+      toast.success('News source deleted successfully');
+      loadNewsSources();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to delete news source: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
@@ -534,7 +701,7 @@ export function AdminPanel() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="pending" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="pending">
                 Pending ({pendingUsers.length})
               </TabsTrigger>
@@ -547,6 +714,10 @@ export function AdminPanel() {
               <TabsTrigger value="blog">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Blog Posts ({blogPosts.length})
+              </TabsTrigger>
+              <TabsTrigger value="news">
+                <Newspaper className="w-4 h-4 mr-2" />
+                News Sources ({newsSources.length})
               </TabsTrigger>
             </TabsList>
 
@@ -1002,6 +1173,184 @@ export function AdminPanel() {
                 </Table>
               </div>
             </TabsContent>
+
+            <TabsContent value="news" className="mt-4">
+              <div className="mb-4 flex justify-end">
+                <Dialog open={isCreateNewsDialogOpen} onOpenChange={setIsCreateNewsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <Plus className="w-4 h-4" />
+                      Create News Source
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Create New AI News Source</DialogTitle>
+                      <DialogDescription>
+                        Add a new AI news source to the directory
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 pt-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="news-name">Name *</Label>
+                        <Input
+                          id="news-name"
+                          placeholder="Enter news source name"
+                          value={newsFormData.name}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, name: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-url">URL *</Label>
+                        <Input
+                          id="news-url"
+                          placeholder="https://example.com"
+                          value={newsFormData.url}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, url: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-description">Description *</Label>
+                        <Textarea
+                          id="news-description"
+                          placeholder="Brief description of the news source"
+                          value={newsFormData.description}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, description: e.target.value })}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-thumbnail">Thumbnail URL</Label>
+                        <Input
+                          id="news-thumbnail"
+                          placeholder="https://example.com/image.jpg"
+                          value={newsFormData.thumbnail_url}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, thumbnail_url: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-category">Category</Label>
+                        <Input
+                          id="news-category"
+                          placeholder="e.g., Newsletter, Directory, Publication"
+                          value={newsFormData.category}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, category: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-badges">Badges (comma-separated)</Label>
+                        <Input
+                          id="news-badges"
+                          placeholder="Daily, Free, Newsletter"
+                          value={newsFormData.badges}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, badges: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="news-sort-order">Sort Order</Label>
+                        <Input
+                          id="news-sort-order"
+                          type="number"
+                          placeholder="0"
+                          value={newsFormData.sort_order}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, sort_order: parseInt(e.target.value) || 0 })}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          id="news-featured"
+                          checked={newsFormData.featured}
+                          onCheckedChange={(checked) => setNewsFormData({ ...newsFormData, featured: checked })}
+                        />
+                        <Label htmlFor="news-featured">Featured</Label>
+                      </div>
+                      <Button onClick={handleCreateNewsSource} className="w-full">
+                        Create News Source
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>URL</TableHead>
+                      <TableHead>Featured</TableHead>
+                      <TableHead>Sort Order</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center">
+                          <div className="flex justify-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : newsSources.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No news sources yet
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      newsSources.map((source) => (
+                        <TableRow key={source.id}>
+                          <TableCell className="font-medium max-w-xs">
+                            <div className="truncate">{source.name}</div>
+                          </TableCell>
+                          <TableCell>
+                            {source.category ? (
+                              <Badge variant="secondary">{source.category}</Badge>
+                            ) : (
+                              <span className="text-muted-foreground">N/A</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="max-w-xs">
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline truncate block"
+                            >
+                              {source.url}
+                            </a>
+                          </TableCell>
+                          <TableCell>
+                            {source.featured && <Badge variant="outline">Featured</Badge>}
+                          </TableCell>
+                          <TableCell>{source.sort_order || 0}</TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => openEditNewsDialog(source)}
+                              >
+                                <Edit className="w-4 h-4 mr-1" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteNewsSource(source.id)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
@@ -1187,6 +1536,96 @@ export function AdminPanel() {
               </div>
             </div>
             <Button onClick={handleEditBlogPost} className="w-full">
+              Save Changes
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit News Source Dialog */}
+      <Dialog open={isEditNewsDialogOpen} onOpenChange={setIsEditNewsDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit AI News Source</DialogTitle>
+            <DialogDescription>
+              Update news source details
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-name">Name *</Label>
+              <Input
+                id="edit-news-name"
+                placeholder="Enter news source name"
+                value={newsFormData.name}
+                onChange={(e) => setNewsFormData({ ...newsFormData, name: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-url">URL *</Label>
+              <Input
+                id="edit-news-url"
+                placeholder="https://example.com"
+                value={newsFormData.url}
+                onChange={(e) => setNewsFormData({ ...newsFormData, url: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-description">Description *</Label>
+              <Textarea
+                id="edit-news-description"
+                placeholder="Brief description of the news source"
+                value={newsFormData.description}
+                onChange={(e) => setNewsFormData({ ...newsFormData, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-thumbnail">Thumbnail URL</Label>
+              <Input
+                id="edit-news-thumbnail"
+                placeholder="https://example.com/image.jpg"
+                value={newsFormData.thumbnail_url}
+                onChange={(e) => setNewsFormData({ ...newsFormData, thumbnail_url: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-category">Category</Label>
+              <Input
+                id="edit-news-category"
+                placeholder="e.g., Newsletter, Directory, Publication"
+                value={newsFormData.category}
+                onChange={(e) => setNewsFormData({ ...newsFormData, category: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-badges">Badges (comma-separated)</Label>
+              <Input
+                id="edit-news-badges"
+                placeholder="Daily, Free, Newsletter"
+                value={newsFormData.badges}
+                onChange={(e) => setNewsFormData({ ...newsFormData, badges: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-news-sort-order">Sort Order</Label>
+              <Input
+                id="edit-news-sort-order"
+                type="number"
+                placeholder="0"
+                value={newsFormData.sort_order}
+                onChange={(e) => setNewsFormData({ ...newsFormData, sort_order: parseInt(e.target.value) || 0 })}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch
+                id="edit-news-featured"
+                checked={newsFormData.featured}
+                onCheckedChange={(checked) => setNewsFormData({ ...newsFormData, featured: checked })}
+              />
+              <Label htmlFor="edit-news-featured">Featured</Label>
+            </div>
+            <Button onClick={handleEditNewsSource} className="w-full">
               Save Changes
             </Button>
           </div>

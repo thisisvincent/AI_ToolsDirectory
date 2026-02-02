@@ -1,5 +1,5 @@
 {
-  "/blog/page": "app/blog/page.js",
+  "/next_api/ai-news-sources/route": "app/next_api/ai-news-sources/route.js",
   "/directory/page": "app/directory/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/search/page": "app/search/page.js",
