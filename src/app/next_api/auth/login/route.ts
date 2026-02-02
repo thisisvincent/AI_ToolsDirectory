@@ -2,23 +2,21 @@
 import CrudOperations from '@/lib/crud-operations';
 import { createSuccessResponse, createErrorResponse } from '@/lib/create-response';
 import { requestMiddleware, validateRequestBody } from "@/lib/api-utils";
-import { generateAdminToken } from '@/lib/auth';
 
 // POST request - login user
 export const POST = requestMiddleware(async (request) => {
   const body = await validateRequestBody(request);
-  
+
   if (!body.email || !body.password) {
     return createErrorResponse({
       errorMessage: "Email and password are required",
       status: 400,
     });
   }
-  
-  // Use admin token to query users table
-  const adminToken = await generateAdminToken();
-  const usersCrud = new CrudOperations("users", adminToken);
-  
+
+  // Use CrudOperations without custom token (will use anon key from env)
+  const usersCrud = new CrudOperations("users");
+
   // Find user by email
   const users = await usersCrud.findMany({ email: body.email });
   
