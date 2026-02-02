@@ -30,7 +30,8 @@ export function createPostgrestClient() {
   client.headers.set("Content-Type", "application/json");
 
   if (POSTGREST_API_KEY) {
-    client.headers.set("Postgrest-API-Key", POSTGREST_API_KEY);
+    client.headers.set("apikey", POSTGREST_API_KEY);
+    client.headers.set("Authorization", `Bearer ${POSTGREST_API_KEY}`);
   }
   return client;
 }
