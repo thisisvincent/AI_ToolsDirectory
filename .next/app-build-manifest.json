@@ -110,6 +110,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/research-writing/page.js"
+    ],
+    "/academic-ai/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/academic-ai/page.js"
     ]
   }
 }
