@@ -1,5 +1,5 @@
 {
-  "/ai-guides-use-case/[subcategoryId]/page": "app/ai-guides-use-case/[subcategoryId]/page.js",
+  "/next_api/favourites/route": "app/next_api/favourites/route.js",
   "/new-releases/page": "app/new-releases/page.js",
   "/directory/page": "app/directory/page.js",
   "/research-writing/page": "app/research-writing/page.js",
