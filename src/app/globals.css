@@ -1,0 +1,163 @@
+
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: oklch(0% 0 0);
+  --color-foreground: oklch(98% 0 0);
+
+  --color-card: oklch(0% 0 0);
+  --color-card-foreground: oklch(98% 0 0);
+
+  --color-popover: oklch(0% 0 0);
+  --color-popover-foreground: oklch(98% 0 0);
+
+  --color-primary: oklch(70.76% 0.221 255.55);
+  --color-primary-foreground: oklch(98% 0 0);
+
+  --color-secondary: oklch(27.84% 0 0);
+  --color-secondary-foreground: oklch(98% 0 0);
+
+  --color-muted: oklch(27.84% 0 0);
+  --color-muted-foreground: oklch(64.9% 0 0);
+
+  --color-accent: oklch(27.84% 0 0);
+  --color-accent-foreground: oklch(98% 0 0);
+
+  --color-destructive: oklch(50% 0.2 25);
+  --color-destructive-foreground: oklch(98% 0 0);
+
+  --color-border: oklch(27.84% 0 0);
+  --color-input: oklch(27.84% 0 0);
+  --color-ring: oklch(70.76% 0.221 255.55);
+
+  --radius: 0.5rem;
+}
+
+:root {
+  --background: oklch(100% 0 0);
+  --foreground: oklch(3.9% 0 0);
+
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(3.9% 0 0);
+
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(3.9% 0 0);
+
+  --primary: oklch(70.76% 0.221 255.55);
+  --primary-foreground: oklch(98% 0 0);
+
+  --secondary: oklch(96.1% 0 0);
+  --secondary-foreground: oklch(9% 0 0);
+
+  --muted: oklch(96.1% 0 0);
+  --muted-foreground: oklch(45.1% 0 0);
+
+  --accent: oklch(96.1% 0 0);
+  --accent-foreground: oklch(9% 0 0);
+
+  --destructive: oklch(50% 0.2 25);
+  --destructive-foreground: oklch(98% 0 0);
+
+  --border: oklch(89.8% 0 0);
+  --input: oklch(89.8% 0 0);
+  --ring: oklch(70.76% 0.221 255.55);
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: oklch(9% 0 0);
+  --foreground: oklch(98% 0 0);
+
+  --card: oklch(9% 0 0);
+  --card-foreground: oklch(98% 0 0);
+
+  --popover: oklch(9% 0 0);
+  --popover-foreground: oklch(98% 0 0);
+
+  --primary: oklch(70.76% 0.221 255.55);
+  --primary-foreground: oklch(98% 0 0);
+
+  --secondary: oklch(14.9% 0 0);
+  --secondary-foreground: oklch(98% 0 0);
+
+  --muted: oklch(14.9% 0 0);
+  --muted-foreground: oklch(63.9% 0 0);
+
+  --accent: oklch(14.9% 0 0);
+  --accent-foreground: oklch(98% 0 0);
+
+  --destructive: oklch(50% 0.2 25);
+  --destructive-foreground: oklch(98% 0 0);
+
+  --border: oklch(14.9% 0 0);
+  --input: oklch(14.9% 0 0);
+  --ring: oklch(70.76% 0.221 255.55);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 6s linear infinite;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(var(--muted-foreground));
+}
