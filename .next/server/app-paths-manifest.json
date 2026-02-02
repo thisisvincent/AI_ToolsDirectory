@@ -4,5 +4,6 @@
   "/directory/page": "app/directory/page.js",
   "/research-writing/page": "app/research-writing/page.js",
   "/academic-ai/page": "app/academic-ai/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/favourites/page": "app/favourites/page.js"
 }
