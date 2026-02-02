@@ -4,5 +4,5 @@
   "/new-releases/page": "app/new-releases/page.js",
   "/directory/page": "app/directory/page.js",
   "/research-writing/page": "app/research-writing/page.js",
-  "/page": "app/page.js"
+  "/academic-ai/page": "app/academic-ai/page.js"
 }
