@@ -1,5 +1,5 @@
 {
-  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
+  "/next_api/blog/route": "app/next_api/blog/route.js",
   "/courses/page": "app/courses/page.js",
   "/ai-guides-use-case/ai-guides/page": "app/ai-guides-use-case/ai-guides/page.js",
   "/ai-guides-use-case/[subcategoryId]/page": "app/ai-guides-use-case/[subcategoryId]/page.js",

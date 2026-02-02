@@ -11,9 +11,11 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { api, ApiError } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { UserPlus, Trash2, Mail, Lock, CheckCircle, XCircle, Clock, Key, Home, Edit } from 'lucide-react';
+import { UserPlus, Trash2, Mail, Lock, CheckCircle, XCircle, Clock, Key, Home, Edit, BookOpen, Plus } from 'lucide-react';
 import { isAdmin } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -31,6 +33,20 @@ interface User {
   created_at: string;
 }
 
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  image_url?: string;
+  author_name: string;
+  published: boolean;
+  featured: boolean;
+  published_at?: string;
+  created_at?: string;
+}
+
 const ADMIN_ROLE = 'app20251014225423lezgriizlf_v1_admin_user';
 const USER_ROLE = 'app20251014225423lezgriizlf_v1_user';
 
@@ -46,6 +62,21 @@ export function AdminPanel() {
   const [passwordData, setPasswordData] = useState({ newPassword: '', confirmPassword: '' });
   const [editData, setEditData] = useState({ name: '', surname: '', email: '' });
 
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isCreateBlogDialogOpen, setIsCreateBlogDialogOpen] = useState(false);
+  const [isEditBlogDialogOpen, setIsEditBlogDialogOpen] = useState(false);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
+  const [blogFormData, setBlogFormData] = useState({
+    title: '',
+    slug: '',
+    description: '',
+    content: '',
+    image_url: '',
+    author_name: 'Admin',
+    published: true,
+    featured: false,
+  });
+
   useEffect(() => {
     if (!isAdmin()) {
       toast.error('Access denied. Only administrators can access this page.');
@@ -53,6 +84,7 @@ export function AdminPanel() {
       return;
     }
     loadUsers();
+    loadBlogPosts();
   }, [router]);
 
   const loadUsers = async () => {
@@ -246,6 +278,132 @@ export function AdminPanel() {
     }
   };
 
+  const loadBlogPosts = async () => {
+    try {
+      const data = await api.get<BlogPost[]>('/blog');
+      setBlogPosts(data);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to load blog posts: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  };
+
+  const handleCreateBlogPost = async () => {
+    if (!blogFormData.title || !blogFormData.description || !blogFormData.content) {
+      toast.error('Title, description, and content are required');
+      return;
+    }
+
+    try {
+      const slug = blogFormData.slug || generateSlug(blogFormData.title);
+      await api.post('/blog', {
+        ...blogFormData,
+        slug,
+      });
+
+      toast.success('Blog post created successfully');
+      setIsCreateBlogDialogOpen(false);
+      setBlogFormData({
+        title: '',
+        slug: '',
+        description: '',
+        content: '',
+        image_url: '',
+        author_name: 'Admin',
+        published: true,
+        featured: false,
+      });
+      loadBlogPosts();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to create blog post: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const openEditBlogDialog = (post: BlogPost) => {
+    setSelectedBlogPost(post);
+    setBlogFormData({
+      title: post.title,
+      slug: post.slug,
+      description: post.description,
+      content: post.content,
+      image_url: post.image_url || '',
+      author_name: post.author_name,
+      published: post.published,
+      featured: post.featured,
+    });
+    setIsEditBlogDialogOpen(true);
+  };
+
+  const handleEditBlogPost = async () => {
+    if (!selectedBlogPost) return;
+
+    if (!blogFormData.title || !blogFormData.description || !blogFormData.content) {
+      toast.error('Title, description, and content are required');
+      return;
+    }
+
+    try {
+      const slug = blogFormData.slug || generateSlug(blogFormData.title);
+      await api.put(`/blog?id=${selectedBlogPost.id}`, {
+        ...blogFormData,
+        slug,
+      });
+
+      toast.success('Blog post updated successfully');
+      setIsEditBlogDialogOpen(false);
+      setSelectedBlogPost(null);
+      setBlogFormData({
+        title: '',
+        slug: '',
+        description: '',
+        content: '',
+        image_url: '',
+        author_name: 'Admin',
+        published: true,
+        featured: false,
+      });
+      loadBlogPosts();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to update blog post: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleDeleteBlogPost = async (postId: number) => {
+    if (!confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/blog?id=${postId}`);
+      toast.success('Blog post deleted successfully');
+      loadBlogPosts();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(`Failed to delete blog post: ${error.errorMessage}`);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
@@ -273,9 +431,9 @@ export function AdminPanel() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-3xl">User Management</CardTitle>
+              <CardTitle className="text-3xl">Admin Panel</CardTitle>
               <CardDescription className="text-base mt-2">
-                Manage user access requests and account settings
+                Manage users, blog posts, and site content
               </CardDescription>
             </div>
             
@@ -376,7 +534,7 @@ export function AdminPanel() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="pending" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="pending">
                 Pending ({pendingUsers.length})
               </TabsTrigger>
@@ -385,6 +543,10 @@ export function AdminPanel() {
               </TabsTrigger>
               <TabsTrigger value="rejected">
                 Rejected ({rejectedUsers.length})
+              </TabsTrigger>
+              <TabsTrigger value="blog">
+                <BookOpen className="w-4 h-4 mr-2" />
+                Blog Posts ({blogPosts.length})
               </TabsTrigger>
             </TabsList>
 
@@ -658,6 +820,188 @@ export function AdminPanel() {
                 </Table>
               </div>
             </TabsContent>
+
+            <TabsContent value="blog" className="mt-4">
+              <div className="mb-4 flex justify-end">
+                <Dialog open={isCreateBlogDialogOpen} onOpenChange={setIsCreateBlogDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <Plus className="w-4 h-4" />
+                      Create Blog Post
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Create New Blog Post</DialogTitle>
+                      <DialogDescription>
+                        Add a new blog post to the site
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 pt-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-title">Title *</Label>
+                        <Input
+                          id="blog-title"
+                          placeholder="Enter blog post title"
+                          value={blogFormData.title}
+                          onChange={(e) => {
+                            const title = e.target.value;
+                            setBlogFormData({
+                              ...blogFormData,
+                              title,
+                              slug: blogFormData.slug || generateSlug(title)
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-slug">Slug *</Label>
+                        <Input
+                          id="blog-slug"
+                          placeholder="url-friendly-slug"
+                          value={blogFormData.slug}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, slug: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-description">Description *</Label>
+                        <Textarea
+                          id="blog-description"
+                          placeholder="Brief description of the blog post"
+                          value={blogFormData.description}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, description: e.target.value })}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-content">Content *</Label>
+                        <Textarea
+                          id="blog-content"
+                          placeholder="Full blog post content"
+                          value={blogFormData.content}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, content: e.target.value })}
+                          rows={8}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-image">Image URL</Label>
+                        <Input
+                          id="blog-image"
+                          placeholder="https://images.unsplash.com/..."
+                          value={blogFormData.image_url}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, image_url: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-author">Author Name</Label>
+                        <Input
+                          id="blog-author"
+                          placeholder="Admin"
+                          value={blogFormData.author_name}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, author_name: e.target.value })}
+                        />
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            id="blog-published"
+                            checked={blogFormData.published}
+                            onCheckedChange={(checked) => setBlogFormData({ ...blogFormData, published: checked })}
+                          />
+                          <Label htmlFor="blog-published">Published</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            id="blog-featured"
+                            checked={blogFormData.featured}
+                            onCheckedChange={(checked) => setBlogFormData({ ...blogFormData, featured: checked })}
+                          />
+                          <Label htmlFor="blog-featured">Featured</Label>
+                        </div>
+                      </div>
+                      <Button onClick={handleCreateBlogPost} className="w-full">
+                        Create Blog Post
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Author</TableHead>
+                      <TableHead>Published</TableHead>
+                      <TableHead>Featured</TableHead>
+                      <TableHead>Created</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center">
+                          <div className="flex justify-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : blogPosts.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                          No blog posts yet
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      blogPosts.map((post) => (
+                        <TableRow key={post.id}>
+                          <TableCell className="font-medium max-w-xs">
+                            <div className="truncate">{post.title}</div>
+                            <div className="text-xs text-muted-foreground truncate">{post.slug}</div>
+                          </TableCell>
+                          <TableCell>{post.author_name}</TableCell>
+                          <TableCell>
+                            {post.published ? (
+                              <Badge className="bg-green-500">Published</Badge>
+                            ) : (
+                              <Badge variant="secondary">Draft</Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {post.featured && <Badge variant="outline">Featured</Badge>}
+                          </TableCell>
+                          <TableCell>
+                            {post.created_at
+                              ? new Date(post.created_at).toLocaleDateString()
+                              : 'N/A'}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => openEditBlogDialog(post)}
+                              >
+                                <Edit className="w-4 h-4 mr-1" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteBlogPost(post.id)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
@@ -753,6 +1097,97 @@ export function AdminPanel() {
             </div>
             <Button onClick={handleChangePassword} className="w-full">
               Change Password
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Blog Post Dialog */}
+      <Dialog open={isEditBlogDialogOpen} onOpenChange={setIsEditBlogDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Blog Post</DialogTitle>
+            <DialogDescription>
+              Update blog post details
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-title">Title *</Label>
+              <Input
+                id="edit-blog-title"
+                placeholder="Enter blog post title"
+                value={blogFormData.title}
+                onChange={(e) => setBlogFormData({ ...blogFormData, title: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-slug">Slug *</Label>
+              <Input
+                id="edit-blog-slug"
+                placeholder="url-friendly-slug"
+                value={blogFormData.slug}
+                onChange={(e) => setBlogFormData({ ...blogFormData, slug: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-description">Description *</Label>
+              <Textarea
+                id="edit-blog-description"
+                placeholder="Brief description of the blog post"
+                value={blogFormData.description}
+                onChange={(e) => setBlogFormData({ ...blogFormData, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-content">Content *</Label>
+              <Textarea
+                id="edit-blog-content"
+                placeholder="Full blog post content"
+                value={blogFormData.content}
+                onChange={(e) => setBlogFormData({ ...blogFormData, content: e.target.value })}
+                rows={8}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-image">Image URL</Label>
+              <Input
+                id="edit-blog-image"
+                placeholder="https://images.unsplash.com/..."
+                value={blogFormData.image_url}
+                onChange={(e) => setBlogFormData({ ...blogFormData, image_url: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-blog-author">Author Name</Label>
+              <Input
+                id="edit-blog-author"
+                placeholder="Admin"
+                value={blogFormData.author_name}
+                onChange={(e) => setBlogFormData({ ...blogFormData, author_name: e.target.value })}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="edit-blog-published"
+                  checked={blogFormData.published}
+                  onCheckedChange={(checked) => setBlogFormData({ ...blogFormData, published: checked })}
+                />
+                <Label htmlFor="edit-blog-published">Published</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="edit-blog-featured"
+                  checked={blogFormData.featured}
+                  onCheckedChange={(checked) => setBlogFormData({ ...blogFormData, featured: checked })}
+                />
+                <Label htmlFor="edit-blog-featured">Featured</Label>
+              </div>
+            </div>
+            <Button onClick={handleEditBlogPost} className="w-full">
+              Save Changes
             </Button>
           </div>
         </DialogContent>
