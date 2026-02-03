@@ -1645,6 +1645,12 @@ export const categoriesData: Category[] = [
             url: 'https://www.krea.ai/'
           },
           {
+            id: 'leonardo-ai-commercial',
+            name: 'Leonardo.Ai',
+            useCase: 'Leverage generative AI with a unique suite of tools to convey your ideas to the world.',
+            url: 'https://leonardo.ai/'
+          },
+          {
             id: 'lightpdf-commercial',
             name: 'Lightpdf.com',
             useCase: 'AI summarizer, AI Analysis, AI Create. Discover the most relevant. Edit, convert, OCR, sign, annotate, chat with PDFs, and more. Accessible across desktop, mobile, and web platforms',
