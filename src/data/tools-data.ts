@@ -1201,6 +1201,12 @@ export const categoriesData: Category[] = [
             url: 'https://dreamina.capcut.com/ai-tool/home/'
           },
           {
+            id: 'faceless-video',
+            name: 'Faceless.video',
+            useCase: 'Use AI to automatically create and post custom videos daily',
+            url: 'https://faceless.video/'
+          },
+          {
             id: 'flux-2',
             name: 'FLUX.2',
             useCase: 'Image generator, is now on Poe',
@@ -1235,6 +1241,12 @@ export const categoriesData: Category[] = [
             name: 'Golpo AI',
             useCase: 'Create Whiteboard Explainer Videos with Prompts / Documents',
             url: 'https://golpoai.com/'
+          },
+          {
+            id: 'golpo-ai-video',
+            name: 'Golpo ai',
+            useCase: 'Text-to-Video AI Platform',
+            url: 'https://video.golpoai.com/'
           },
           {
             id: 'google-flow',
@@ -1288,9 +1300,9 @@ export const categoriesData: Category[] = [
           },
           {
             id: 'intangible-ai',
-            name: 'Intangible.AI',
-            useCase: 'Video generator. 10x better image & video composition with 10x fewer prompts. AI SCENE COMPOSER. AI for camera control freaks',
-            url: 'https://www.intangible.ai/'
+            name: 'Intangible.ai',
+            useCase: 'image & video composition',
+            url: 'https://studio.intangible.ai/'
           },
           {
             id: 'invideo-ai-v3',
@@ -1321,6 +1333,12 @@ export const categoriesData: Category[] = [
             name: 'Longcat',
             useCase: 'Generate Minutes-Long Videos with AI',
             url: 'https://longcat-video.com/'
+          },
+          {
+            id: 'longcat-ai',
+            name: 'Longcat ai',
+            useCase: 'Generate video',
+            url: 'https://longcat.chat/'
           },
           {
             id: 'ltx-studio',
@@ -1365,6 +1383,18 @@ export const categoriesData: Category[] = [
             name: 'Moonvalley',
             useCase: 'Create 3D Models',
             url: 'https://www.moonvalley.com/'
+          },
+          {
+            id: 'nemovideo',
+            name: 'NemoVideo',
+            useCase: 'NemoVideo is your free AI video clipper and repurposing tool.',
+            url: 'https://www.nemovideo.com/'
+          },
+          {
+            id: 'nim-video',
+            name: 'Nim.Video',
+            useCase: 'The ultimate AI video app',
+            url: 'https://nim.video/'
           },
           {
             id: 'omagic-ai',
@@ -1427,6 +1457,12 @@ export const categoriesData: Category[] = [
             url: 'https://huggingface.co/collections/Skywork/skyreels-v2-6801b1b93df627d41d00d9'
           },
           {
+            id: 'sjinn-ai-video',
+            name: 'Sjinn ai video',
+            useCase: 'AI-powered image, video, audio, and 3D content creation',
+            url: 'https://sjinn.ai/'
+          },
+          {
             id: 'sora',
             name: 'Sora',
             useCase: 'Video Generator, 720p resolution and 5s duration ChatGPT Plus $20/month',
@@ -1467,6 +1503,12 @@ export const categoriesData: Category[] = [
             name: 'Synthesia.io/',
             useCase: 'Turn text to videos with AI avatars and voiceovers in 140+ languages.',
             url: 'https://www.synthesia.io/'
+          },
+          {
+            id: 'synterial',
+            name: 'Synterial',
+            useCase: 'Create Viral Videos',
+            url: 'https://synterial.com/#!'
           },
           {
             id: 'teachomatic-net',
@@ -1510,6 +1552,12 @@ export const categoriesData: Category[] = [
             name: 'Videopal.ai/',
             useCase: 'Create viral faceless videos with AI',
             url: 'https://www.videopal.ai/'
+          },
+          {
+            id: 'vidalgo',
+            name: 'Vidalgo',
+            useCase: 'Video generator',
+            url: 'https://www.vidalgo.tech/'
           },
           {
             id: 'wan',
