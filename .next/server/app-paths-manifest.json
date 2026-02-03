@@ -1,9 +1,9 @@
 {
   "/directory/page": "app/directory/page.js",
   "/tools-by-use-case/page": "app/tools-by-use-case/page.js",
-  "/page": "app/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/blog/page": "app/blog/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js"
+  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
+  "/ai-guides-use-case/[subcategoryId]/page": "app/ai-guides-use-case/[subcategoryId]/page.js"
 }
