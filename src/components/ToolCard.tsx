@@ -22,15 +22,17 @@ export function ToolCard({ tool, onFavouriteChange }: ToolCardProps) {
 
   useEffect(() => {
     checkIfFavourite();
-  }, [tool.name]);
+  }, [tool.id]);
 
   const checkIfFavourite = async () => {
     const user = getCurrentUser();
     if (!user) return;
 
     try {
-      const favourites = await api.get<any[]>('/favourites');
-      const exists = favourites.some(fav => fav.tool_name === tool.name);
+      const favourites = await api.get<any[]>('/next_api/favourites/unified');
+      const exists = favourites.some(
+        fav => fav.item_type === 'tool' && fav.item_id === tool.id
+      );
       setIsFavourite(exists);
     } catch (error) {
       // Silently fail - user might not be authenticated
@@ -52,16 +54,18 @@ export function ToolCard({ tool, onFavouriteChange }: ToolCardProps) {
     try {
       if (isFavourite) {
         // Remove from favourites
-        await api.delete(`/favourites?search=${encodeURIComponent(tool.name)}`);
+        await api.delete(`/next_api/favourites/unified?item_type=tool&item_id=${tool.id}`);
         setIsFavourite(false);
         toast.success('Removed from favourites');
       } else {
         // Add to favourites
-        await api.post('/favourites', {
-          tool_name: tool.name,
-          tool_category: 'General', // You can pass category if available
-          tool_description: tool.useCase,
-          tool_url: tool.url,
+        await api.post('/next_api/favourites/unified', {
+          item_type: 'tool',
+          item_id: tool.id,
+          item_name: tool.name,
+          item_url: tool.url,
+          item_description: tool.useCase,
+          metadata: {},
         });
         setIsFavourite(true);
         toast.success('Added to favourites');

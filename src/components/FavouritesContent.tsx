@@ -11,11 +11,13 @@ import { Heart, Loader2 } from 'lucide-react';
 interface FavouriteTool {
   id: number;
   user_id: number;
-  tool_name: string;
-  tool_category: string;
-  tool_description: string;
-  tool_url: string;
-  tool_image_url?: string;
+  item_type: string;
+  item_id: string;
+  item_name: string;
+  item_url: string;
+  item_description: string;
+  item_image_url?: string;
+  metadata: Record<string, any>;
   created_at: string;
 }
 
@@ -26,7 +28,7 @@ export function FavouritesContent() {
   const fetchFavourites = async () => {
     setLoading(true);
     try {
-      const data = await api.get<FavouriteTool[]>('/favourites');
+      const data = await api.get<FavouriteTool[]>('/next_api/favourites/unified?item_type=tool');
       setFavourites(data);
     } catch (error) {
       if (error instanceof ApiError) {
@@ -119,10 +121,10 @@ export function FavouritesContent() {
                 <ToolCard
                   key={favourite.id}
                   tool={{
-                    id: favourite.id.toString(),
-                    name: favourite.tool_name,
-                    useCase: favourite.tool_description,
-                    url: favourite.tool_url,
+                    id: favourite.item_id,
+                    name: favourite.item_name,
+                    useCase: favourite.item_description,
+                    url: favourite.item_url,
                   }}
                   onFavouriteChange={handleFavouriteRemoved}
                 />
