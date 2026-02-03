@@ -5,5 +5,6 @@
   "/courses/page": "app/courses/page.js",
   "/ai-guides-use-case/ai-guides/page": "app/ai-guides-use-case/ai-guides/page.js",
   "/directory/page": "app/directory/page.js",
-  "/tools-by-use-case/page": "app/tools-by-use-case/page.js"
+  "/tools-by-use-case/page": "app/tools-by-use-case/page.js",
+  "/admin/page": "app/admin/page.js"
 }
