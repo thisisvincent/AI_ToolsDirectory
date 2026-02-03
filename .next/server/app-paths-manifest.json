@@ -1,4 +1,5 @@
 {
+  "/next_api/blog/route": "app/next_api/blog/route.js",
   "/directory/page": "app/directory/page.js",
   "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
   "/ai-guides-use-case/[subcategoryId]/page": "app/ai-guides-use-case/[subcategoryId]/page.js",
