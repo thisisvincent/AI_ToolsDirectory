@@ -4,5 +4,6 @@
   "/page": "app/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/blog/page": "app/blog/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js"
 }
