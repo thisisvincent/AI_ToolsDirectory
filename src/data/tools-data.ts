@@ -1020,6 +1020,18 @@ export const categoriesData: Category[] = [
             url: 'https://inflection.ai/'
           },
           {
+            id: 'imagine-art',
+            name: 'Imagine.art',
+            useCase: 'ImagineArt is the best AI creative suite that generates images, videos, shorts, and voice from text prompt. The platform includes advanced editing tool',
+            url: 'https://www.imagine.art/'
+          },
+          {
+            id: 'kimi',
+            name: 'Kimi',
+            useCase: 'Kimi, Kimi Slides, Kimi Code',
+            url: 'https://www.kimi.com/'
+          },
+          {
             id: 'monica-im',
             name: 'Monica.im',
             useCase: 'All-in-one AI assistant.',
@@ -1042,6 +1054,18 @@ export const categoriesData: Category[] = [
             name: 'Poe',
             useCase: 'Talk to ChatGPT, GPT-4o, Claude 3 Opus, DALLE 3, and millions of others - all on Poe for one sub',
             url: 'https://poe.com/'
+          },
+          {
+            id: 'qwen-image-edit',
+            name: 'Qwen image edit',
+            useCase: 'Image generation, Web creation, AI Chat Assistant',
+            url: 'https://qwen.ai/home'
+          },
+          {
+            id: 'recraft-ai',
+            name: 'Recraft.ai',
+            useCase: 'Create and edit images, vectors, and mockups with leading AI models',
+            url: 'https://www.recraft.ai/'
           },
           {
             id: 'replicate',
