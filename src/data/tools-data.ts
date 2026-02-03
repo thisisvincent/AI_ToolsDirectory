@@ -934,6 +934,12 @@ export const categoriesData: Category[] = [
             name: 'String.com',
             useCase: 'Prompt, run, edit, and deploy AI agents in seconds',
             url: 'https://string.com'
+          },
+          {
+            id: 'n8n',
+            name: 'N8N',
+            useCase: 'AI workflow automation and APPS',
+            url: 'https://n8n.io/pricing/'
           }
         ]
       },
