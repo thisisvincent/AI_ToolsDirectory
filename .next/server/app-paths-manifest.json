@@ -1,9 +1,9 @@
 {
   "/next_api/courses/route": "app/next_api/courses/route.js",
-  "/favourites/page": "app/favourites/page.js",
   "/search/page": "app/search/page.js",
   "/ai-news-sources/page": "app/ai-news-sources/page.js",
   "/new-releases/page": "app/new-releases/page.js",
   "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
-  "/courses/page": "app/courses/page.js"
+  "/courses/page": "app/courses/page.js",
+  "/ai-guides-use-case/ai-guides/page": "app/ai-guides-use-case/ai-guides/page.js"
 }
