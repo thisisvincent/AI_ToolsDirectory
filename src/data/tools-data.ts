@@ -1981,6 +1981,12 @@ export const categoriesData: Category[] = [
             url: 'https://deepmind.google/models/imagen/'
           },
           {
+            id: 'ideogram',
+            name: 'Ideogram',
+            useCase: 'Generate stunning images, explore creative ideas, and turn inspiration into reality with Ideogram',
+            url: 'https://ideogram.ai'
+          },
+          {
             id: 'imagine-meta',
             name: 'Imagine.meta.com/',
             useCase: 'Generative AI/ Image generator',
@@ -2024,9 +2030,9 @@ export const categoriesData: Category[] = [
           },
           {
             id: 'midjourney',
-            name: 'Midjourney.com/',
-            useCase: 'Image Generator',
-            url: 'http://midjourney.com/'
+            name: 'Midjourney',
+            useCase: 'Midjourney is an image generator',
+            url: 'https://www.midjourney.com/'
           },
           {
             id: 'mokker-ai-img',
@@ -2130,6 +2136,12 @@ export const categoriesData: Category[] = [
             name: 'Viesus(2)',
             useCase: 'Enhances and upscales images and images in PDFs',
             url: 'https://www.viesus.cloud/'
+          },
+          {
+            id: 'z-image-ai',
+            name: 'Z-image.ai',
+            useCase: 'Fast & Free image generator',
+            url: 'https://z-image.ai/'
           },
           {
             id: 'z-image-turbo',
