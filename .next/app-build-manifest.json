@@ -45,6 +45,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/ai-guides-use-case/page.js"
+    ],
+    "/ai-guides-use-case/ai-guides/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/ai-guides-use-case/ai-guides/page.js"
+    ],
+    "/next_api/blog/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/next_api/blog/route.js"
     ]
   }
 }
