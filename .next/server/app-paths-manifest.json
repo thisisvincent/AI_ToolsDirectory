@@ -1,4 +1,5 @@
 {
   "/directory/page": "app/directory/page.js",
-  "/academic-ai/page": "app/academic-ai/page.js"
+  "/academic-ai/page": "app/academic-ai/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }
