@@ -100,6 +100,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/ai-guides-use-case/ai-guides/page.js"
+    ],
+    "/tools-by-use-case/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/tools-by-use-case/page.js"
     ]
   }
 }
