@@ -1,11 +1,10 @@
 {
-  "/next_api/favourites/route": "app/next_api/favourites/route.js",
-  "/next_api/blog/route": "app/next_api/blog/route.js",
   "/next_api/ai-news-sources/route": "app/next_api/ai-news-sources/route.js",
-  "/directory/page": "app/directory/page.js",
+  "/next_api/favourites/route": "app/next_api/favourites/route.js",
   "/research-writing/page": "app/research-writing/page.js",
   "/blog/page": "app/blog/page.js",
   "/favourites/page": "app/favourites/page.js",
   "/search/page": "app/search/page.js",
-  "/ai-news-sources/page": "app/ai-news-sources/page.js"
+  "/ai-news-sources/page": "app/ai-news-sources/page.js",
+  "/new-releases/page": "app/new-releases/page.js"
 }
