@@ -200,39 +200,32 @@ export function deleteUser(id: string): { success: boolean; error?: string } {
 /**
  * Generate a JWT token for admin user to bypass RLS policies
  * This is used server-side only for system operations
+ * Returns the Supabase API key instead of generating a custom JWT
  */
 export async function generateAdminToken(): Promise<string> {
-  const secret = new TextEncoder().encode(JWT_SECRET);
-  
-  const token = await new SignJWT({ 
-    sub: '1', // Admin user ID
-    email: ADMIN_EMAIL,
-    role: ADMIN_ROLE
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1h')
-    .sign(secret);
-  
-  return token;
+  // Use Supabase's anon key for API operations
+  // This is the correct way to authenticate with Supabase PostgREST
+  const apiKey = process.env.POSTGREST_API_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  if (!apiKey) {
+    throw new Error('No Supabase API key found in environment variables');
+  }
+
+  return apiKey;
 }
 
 /**
  * Generate a JWT token for a specific user
  * This is used server-side for user-specific operations
+ * Returns the Supabase API key for authentication
  */
 export async function generateUserToken(userId: string, email: string, role?: string): Promise<string> {
-  const secret = new TextEncoder().encode(JWT_SECRET);
-  
-  const token = await new SignJWT({ 
-    sub: userId,
-    email: email,
-    role: role || USER_ROLE
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1h')
-    .sign(secret);
-  
-  return token;
+  // Use Supabase's anon key for API operations
+  const apiKey = process.env.POSTGREST_API_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  if (!apiKey) {
+    throw new Error('No Supabase API key found in environment variables');
+  }
+
+  return apiKey;
 }
