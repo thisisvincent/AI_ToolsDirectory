@@ -5,5 +5,6 @@
   "/directory/page": "app/directory/page.js",
   "/research-writing/page": "app/research-writing/page.js",
   "/blog/page": "app/blog/page.js",
-  "/favourites/page": "app/favourites/page.js"
+  "/favourites/page": "app/favourites/page.js",
+  "/search/page": "app/search/page.js"
 }
