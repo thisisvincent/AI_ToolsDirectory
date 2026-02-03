@@ -219,7 +219,7 @@ INSERT INTO courses (title, provider, description, url, duration, certificate_av
 
 -- Insert Microsoft courses
 INSERT INTO courses (title, provider, description, url, duration, certificate_available, course_type, sort_order) VALUES
-('Career Essentials in Generative AI', 'Microsoft/LinkedIn', 'Focuses on Copilot and business applications. Certificate free with LinkedIn Premium. What Is Generative AI? (Released Mar 15, 2023), Your Top AI Questions Answered: AI Literacy for... (Released Aug 1, 2025), Learning Microsoft 365 Copilot for Work (Released Aug 26, 2025), Using Generative AI Ethically at Work (Released Jan 23, 2025), Everyday AI Concepts (Released Nov 5, 2024)', 'https://www.linkedin.com/learning/paths/career-essentials-in-generative-ai-by-microsoft-and-linkedin', '5 hours', true, 'Certificate Course', 12);
+('Career Essentials in Generative AI', 'Microsoft/LinkedIn', 'Focuses on Copilot and business applications. Certificate free with LinkedIn Premium. What Is Generative AI? (Released Mar 15, 2023), Your Top AI Questions Answered: AI Literacy for... (Released Aug 1, 2025), Learning Microsoft 365 Copilot for Work (Released Aug 26, 2025), Using Generative AI Ethically at Work (Released Jan 23, 2025), Everyday AI Concepts (Released Nov 5, 2026)', 'https://www.linkedin.com/learning/paths/career-essentials-in-generative-ai-by-microsoft-and-linkedin', '5 hours', true, 'Certificate Course', 12);
 
 -- Insert other provider courses
 INSERT INTO courses (title, provider, description, url, duration, certificate_available, course_type, sort_order) VALUES

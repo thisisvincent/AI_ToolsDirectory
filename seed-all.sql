@@ -112,7 +112,7 @@ Released Jan 23, 2025
 
 Everyday AI Concepts
 Learn key artificial intelligence concepts and discover how AI can benefit your team, organization, products, and services.
-Released Nov 5, 2024
+Released Nov 5, 2026
 
 5 courses 5 hours of content', 'https://www.linkedin.com/learning/paths/career-essentials-in-generative-ai-by-microsoft-and-linkedin', '5 hours', true, NULL, 13);
 
@@ -208,7 +208,7 @@ INSERT INTO course_modules (course_id, module_number, module_title, module_descr
 ((SELECT id FROM courses WHERE title LIKE 'Career Essentials in Generative AI%'), 2, 'Your Top AI Questions Answered: AI Literacy for ...', 'Boost your awareness of core concepts in AI in this beginner-friendly course accessible to anyone.', 'Released Aug 1, 2025'),
 ((SELECT id FROM courses WHERE title LIKE 'Career Essentials in Generative AI%'), 3, 'Learning Microsoft 365 Copilot for Work', 'From creating compelling presentations to managing communications effortlessly, learn how Microsoft 365 Copilot helps you enhance your productivity as you work smarter and faster.', 'Released Aug 26, 2025'),
 ((SELECT id FROM courses WHERE title LIKE 'Career Essentials in Generative AI%'), 4, 'Using Generative AI Ethically at Work', 'Learn how to address common ethical issues when using generative AI-powered tools at work.', 'Released Jan 23, 2025'),
-((SELECT id FROM courses WHERE title LIKE 'Career Essentials in Generative AI%'), 5, 'Everyday AI Concepts', 'Learn key artificial intelligence concepts and discover how AI can benefit your team, organization, products, and services.', 'Released Nov 5, 2024');
+((SELECT id FROM courses WHERE title LIKE 'Career Essentials in Generative AI%'), 5, 'Everyday AI Concepts', 'Learn key artificial intelligence concepts and discover how AI can benefit your team, organization, products, and services.', 'Released Nov 5, 2026');
 
 -- University of Illinois Modules
 INSERT INTO course_modules (course_id, module_number, module_title, module_description, duration) VALUES

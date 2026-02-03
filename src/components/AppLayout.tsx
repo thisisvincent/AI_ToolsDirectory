@@ -173,7 +173,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="border-t p-4">
           {!sidebarCollapsed && (
             <div className="text-xs text-muted-foreground text-center">
-              © 2024 Adept AI Tools
+              © 2026 Adept AI Tools
             </div>
           )}
         </div>
