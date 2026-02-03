@@ -33,13 +33,18 @@ export const GET = requestMiddleware(async (request) => {
 
   if (author) {
     filters.author_name = author;
+    console.log('Filtering by author:', author);
   }
-  
-  const data = await blogCrud.findMany(filters, { 
-    limit: limit || 1000, 
+
+  console.log('Blog API filters:', JSON.stringify(filters));
+
+  const data = await blogCrud.findMany(filters, {
+    limit: limit || 1000,
     offset: offset || 0,
     orderBy: { column: 'published_at', direction: 'desc' }
   });
+
+  console.log('Blog API returned:', data?.length, 'posts');
   
   // Client-side search filtering
   let filteredData = data;

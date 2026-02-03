@@ -51,9 +51,11 @@ export default class CrudOperations {
     }
 
     if (filters) {
+      console.log(`[CrudOperations] Applying filters to ${this.tableName}:`, JSON.stringify(filters));
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           query = query.eq(key, value);
+          console.log(`[CrudOperations] Applied filter: ${key} = ${value}`);
         }
       });
     }
@@ -65,9 +67,11 @@ export default class CrudOperations {
     const { data, error } = await query;
 
     if (error) {
+      console.error(`[CrudOperations] Query error for ${this.tableName}:`, error);
       throw new Error(`Failed to fetch ${this.tableName}: ${error.message}`);
     }
 
+    console.log(`[CrudOperations] Query successful for ${this.tableName}, returned ${data?.length || 0} rows`);
     return data;
   }
 

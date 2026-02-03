@@ -5,6 +5,15 @@ const POSTGREST_SCHEMA = process.env.POSTGREST_SCHEMA || "public";
 const POSTGREST_API_KEY = process.env.POSTGREST_API_KEY || "";
 
 export function createPostgrestClient() {
+  if (!POSTGREST_URL) {
+    console.error('[PostgREST] POSTGREST_URL is not set!');
+    throw new Error('POSTGREST_URL environment variable is required');
+  }
+
+  console.log('[PostgREST] Creating client with URL:', POSTGREST_URL);
+  console.log('[PostgREST] Using schema:', POSTGREST_SCHEMA);
+  console.log('[PostgREST] API key present:', !!POSTGREST_API_KEY);
+
   const client = new PostgrestClient(POSTGREST_URL, {
     schema: POSTGREST_SCHEMA,
     fetch: (...args) => {
@@ -21,6 +30,7 @@ export function createPostgrestClient() {
         }
       }
 
+      console.log('[PostgREST] Fetching:', typeof url === 'string' ? url : url.toString());
       return fetch(url, {
         ...options,
       } as RequestInit);
@@ -32,6 +42,8 @@ export function createPostgrestClient() {
   if (POSTGREST_API_KEY) {
     client.headers.set("apikey", POSTGREST_API_KEY);
     client.headers.set("Authorization", `Bearer ${POSTGREST_API_KEY}`);
+  } else {
+    console.warn('[PostgREST] No API key found - requests may fail!');
   }
   return client;
 }

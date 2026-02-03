@@ -36,6 +36,7 @@ export default function AIGuidesPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
+      console.log('Fetching AI guides from:', '/next_api/blog?author=AI%20Guide');
       const response = await fetch('/next_api/blog?author=AI%20Guide', {
         method: 'GET',
         headers: {
@@ -43,20 +44,27 @@ export default function AIGuidesPage() {
         },
       });
 
+      console.log('Response status:', response.status, response.ok);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch');
+        const errorText = await response.text();
+        console.error('Response error:', errorText);
+        throw new Error(`Failed to fetch: ${response.status} ${errorText}`);
       }
 
       const result = await response.json();
+      console.log('API result:', result);
 
       if (result.success && result.data) {
+        console.log('Found posts:', result.data.length);
         setPosts(result.data);
       } else {
+        console.error('API returned unsuccessful or no data:', result);
         throw new Error(result.errorMessage || 'Failed to fetch posts');
       }
     } catch (error) {
       console.error('Error fetching AI guides:', error);
-      toast.error('Failed to fetch AI guides');
+      toast.error(`Failed to fetch AI guides: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
