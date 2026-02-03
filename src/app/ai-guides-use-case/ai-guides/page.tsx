@@ -1,4 +1,3 @@
-
 'use client';
 
 import { ProtectedRoute } from '@/components/ProtectedRoute';
@@ -8,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { api, ApiError } from '@/lib/api-client';
 import { toast } from 'sonner';
 
 interface BlogPost {
@@ -38,14 +36,27 @@ export default function AIGuidesPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const data = await api.get<BlogPost[]>('/blog', { author: 'AI Guide' });
-      setPosts(data);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        toast.error(`Failed to fetch AI guides: ${error.message}`);
-      } else {
-        toast.error('An unexpected error occurred');
+      const response = await fetch('/next_api/blog?author=AI%20Guide', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch');
       }
+
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        setPosts(result.data);
+      } else {
+        throw new Error(result.errorMessage || 'Failed to fetch posts');
+      }
+    } catch (error) {
+      console.error('Error fetching AI guides:', error);
+      toast.error('Failed to fetch AI guides');
     } finally {
       setLoading(false);
     }
@@ -64,7 +75,6 @@ export default function AIGuidesPage() {
   return (
     <ProtectedRoute>
       <div className="w-full min-h-screen bg-background">
-        {/* Header Section */}
         <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b">
           <div className="container mx-auto px-4 py-16 max-w-7xl">
             <Link href="/ai-guides-use-case">
@@ -93,7 +103,6 @@ export default function AIGuidesPage() {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="container mx-auto px-4 py-12 max-w-7xl">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
@@ -129,7 +138,6 @@ export default function AIGuidesPage() {
                   >
                     <Link href={`/blog/${post.slug}`}>
                       <Card className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 group border-2 hover:border-primary/50 cursor-pointer">
-                        {/* Image */}
                         <div className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                           <img
                             src={post.image_url || 'https://images.pexels.com/photos/8849295/pexels-photo-8849295.jpeg?auto=compress&cs=tinysrgb&w=800'}
@@ -140,7 +148,6 @@ export default function AIGuidesPage() {
                         </div>
 
                         <CardContent className="flex-1 flex flex-col p-6">
-                          {/* Meta Info */}
                           <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
@@ -154,17 +161,14 @@ export default function AIGuidesPage() {
                             )}
                           </div>
 
-                          {/* Title */}
                           <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                             {post.title}
                           </h3>
 
-                          {/* Description */}
                           <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">
                             {post.description}
                           </p>
 
-                          {/* Read More Link */}
                           <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-4 transition-all">
                             <span>Read more</span>
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
