@@ -1,6 +1,5 @@
 {
-  "/next_api/courses/route": "app/next_api/courses/route.js",
-  "/search/page": "app/search/page.js",
+  "/next_api/favourites/route": "app/next_api/favourites/route.js",
   "/ai-news-sources/page": "app/ai-news-sources/page.js",
   "/new-releases/page": "app/new-releases/page.js",
   "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
