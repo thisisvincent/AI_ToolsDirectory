@@ -80,6 +80,21 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/new-releases/page.js"
+    ],
+    "/ai-guides-use-case/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/ai-guides-use-case/page.js"
+    ],
+    "/courses/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/courses/page.js"
+    ],
+    "/next_api/courses/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/next_api/courses/route.js"
     ]
   }
 }
