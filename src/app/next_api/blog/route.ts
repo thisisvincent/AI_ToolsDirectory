@@ -10,24 +10,29 @@ export const GET = requestMiddleware(async (request) => {
   const category = searchParams.get('category');
   const featured = searchParams.get('featured');
   const slug = searchParams.get('slug');
-  
+  const author = searchParams.get('author');
+
   const blogCrud = new CrudOperations("blog_posts");
-  
+
   // Build filter conditions
   const filters: Record<string, any> = {
     published: true
   };
-  
+
   if (category && category !== 'all') {
     filters.category_id = category;
   }
-  
+
   if (featured === 'true') {
     filters.featured = true;
   }
-  
+
   if (slug) {
     filters.slug = slug;
+  }
+
+  if (author) {
+    filters.author_name = author;
   }
   
   const data = await blogCrud.findMany(filters, { 

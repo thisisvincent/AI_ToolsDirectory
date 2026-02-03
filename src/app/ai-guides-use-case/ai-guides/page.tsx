@@ -38,9 +38,8 @@ export default function AIGuidesPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const data = await api.get<BlogPost[]>('/blog');
-      const aiGuidePosts = data.filter(post => post.author_name === 'AI Guide');
-      setPosts(aiGuidePosts);
+      const data = await api.get<BlogPost[]>('/blog', { author: 'AI Guide' });
+      setPosts(data);
     } catch (error) {
       if (error instanceof ApiError) {
         toast.error(`Failed to fetch AI guides: ${error.message}`);
