@@ -2466,8 +2466,8 @@ export const categoriesData: Category[] = [
           {
             id: 'emergent-sh',
             name: 'Emergent.sh',
-            useCase: 'An AI-powered website builder.',
-            url: 'https://app.emergent.sh/login'
+            useCase: 'Transform your ideas into fully functional websites and mobile apps',
+            url: 'https://app.emergent.sh/landing/v2/'
           },
           {
             id: 'firebase-studio',
@@ -2506,6 +2506,12 @@ export const categoriesData: Category[] = [
             url: 'https://gamma.app'
           },
           {
+            id: 'google-gemini-web-building',
+            name: 'Google Gemini',
+            useCase: 'Dynamic View - build web',
+            url: 'https://gemini.google.com/app'
+          },
+          {
             id: 'google-ai-studio-vibe-code',
             name: 'Google AI Studio',
             useCase: 'Vibe Code with Gemini. Turn your ideas to functional, shareable apps with AI features built-in by default. Go from Prompt to Product in AI Studio.',
@@ -2516,6 +2522,12 @@ export const categoriesData: Category[] = [
             name: 'Instalanding.ai',
             useCase: 'Generate landing pages. Copy and paste template on bolt.ai',
             url: 'https://instalanding.ai/'
+          },
+          {
+            id: 'kimi-web-building',
+            name: 'Kimi',
+            useCase: 'Kimi, Kimi Slides, Kimi Code',
+            url: 'https://www.kimi.com/'
           },
           {
             id: 'kimi-k2-thinking',
@@ -2552,6 +2564,12 @@ export const categoriesData: Category[] = [
             name: 'OpenBuilder',
             useCase: 'Describe what you would like to build',
             url: 'https://theopenbuilder.com/'
+          },
+          {
+            id: 'qwen-image-edit-web',
+            name: 'Qwen image edit',
+            useCase: 'Image generation, Web creation, AI Chat Assistant',
+            url: 'https://qwen.ai/home'
           },
           {
             id: 'replit',
