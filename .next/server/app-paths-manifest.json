@@ -1,9 +1,0 @@
-{
-  "/ai-guides-use-case/page": "app/ai-guides-use-case/page.js",
-  "/ai-guides-use-case/ai-guides/page": "app/ai-guides-use-case/ai-guides/page.js",
-  "/blog/[slug]/page": "app/blog/[slug]/page.js",
-  "/blog/page": "app/blog/page.js",
-  "/page": "app/page.js",
-  "/directory/page": "app/directory/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
-}
